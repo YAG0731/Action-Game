@@ -105,7 +105,7 @@ class Level(object):
             screen_height - 250: (screen_width - 700, screen_width - 450), \
                 screen_height - 300: (screen_width - 350, screen_width - 50)}
 
-    object_tiles = [[["Tombstrone (1).png", screen_width - 1100, screen_height - 80]]]
+    object_tiles = [[["Tombstone (1).png", screen_width - 1100, screen_height - 80]]]
 
     def __init__(self,id):
         self.id = id
@@ -143,17 +143,16 @@ class Level(object):
 
     def place_tile(self, surface):
         for tile in self.object_tiles[self.id]:
-            image = pygame.transform.scale(pygame.image.load("png/Objects/" + tile[0]). convert_alpha(), (30,30))
-            surface.bilt(image, (tile[1], tile[2]))
+            image = pygame.transform.scale(pygame.image.load("png/Objects/" + tile[0]).convert_alpha(), (30,30))
+            surface.blit(image, (tile[1], tile[2]))
 
-    def get_tile_reacts(self):
+    def get_tile_rects(self):
         tile_rects = []
         for tile in self.object_tiles[self.id]:
             tile_rects.append(pygame.Rect(tile[1], tile[2], 30, 30))
             return tile_rects
 
 class HUD(object):
-
     def _init_(self):
         self.score = 0
         self.level = 1
@@ -170,23 +169,27 @@ class HUD(object):
         self.message = message
     
     def display(self, display, message, help):
-        front_title = pygame.font.Font(None, 24)
+        font_title = pygame.font.Font(None, 24)
         if help:
-            msg = front_title.render("A D [left-arrow] [right-arrow] [space] to move", True, (255,255,255))
+            msg = font_title.render("A D [left-arrow] [right-arrow] [space] to move", True, (255,255,255))
             msg_rect = msg.get_rect(center=(int(screen_width/2), screen_height - 15))
-            display.bilt(msg, msg_rect)
-        lives = font_title.render("Live: " + str(self.lives), True, (255,255,255))
-        lives_rect = lives.get_rect(center=(int(screen_width * 0.8), 15))
-        display.bilt(score, score_rect)
+            display.blit(msg, msg_rect)
+        # lives = font_title.render("Live: " + str(self.lives), True, (255,255,255))
+        # lives_rect = lives.get_rect(center=(int(screen_width/5), 15))
+        # display.blit(lives, lives_rect)
 
-        msg = front_title.render(message, True, (255,255,255))
+        # score = font_title.render("Score: " + str(self.score), True, (255, 255, 255))
+        # score_rect = score.get_rect(center=(int(screen_width * 0.8), 15))
+        # display.blit(score, score_rect)
+
+        msg = font_title.render(message, True, (255,255,255))
         msg_rect = msg.get_rect(center=(int(screen_width/2), 15))
-        display.bilt(msg, msg_rect)
+        display.blit(msg, msg_rect)
 
 def red_screen_of_death(screen):
     surface = pygame.Surface((screen_width, screen_height)).convert_alpha()
     surface.fill((25,0,0,75))
-    screen.bilt(surface, (0,0))
+    screen.blit(surface, (0,0))
     pygame.display.update()
     pygame.time.delay(3000)
     pygame.quit()
@@ -249,7 +252,7 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                needs_help = event.key != pygame.K_RIGHT and event.key != pygame.K_d and event.key != pygame.K_LEFT and event.key != pygae.K_a and event.key != pygame.K_SPACE
+                needs_help = event.key != pygame.K_RIGHT and event.key != pygame.K_d and event.key != pygame.K_LEFT and event.key != pygame.K_a and event.key != pygame.K_SPACE
                 if needs_help:
                     help_action = True 
                     help_time = pygame.time.get_ticks()
